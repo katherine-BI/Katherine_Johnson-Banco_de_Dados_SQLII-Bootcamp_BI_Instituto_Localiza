@@ -434,7 +434,7 @@ a explosão de linhas e elimina a necessidade de DISTINCT. Porém o JOIN ainda �
 tabelas. Por isso, se o objetivo é só 'clientes que possuem pedidos pagos', EXISTS é mais performático */
 --7.3
 
---Cálculo de totais por cliente - eu utilizei sum() inicialmente
+--Cálculo de totais por cliente - Foi utilizado sum() inicialmente
 WITH total_por_cliente AS MATERIALIZED (
     SELECT customer_id, SUM(valor_total) AS total
     FROM orders
@@ -446,7 +446,7 @@ FROM total_por_cliente
 WHERE total > 1000;
 
 
--- relatórios de vendas mensais - antes utilizei uma CTE recursiva para gerar os meses e depois juntei com orders
+-- relatórios de vendas mensais - Inicialmente, foi utilizada uma CTE recursiva para gerar os meses e depois ela foi juntada com orders
 
 WITH RECURSIVE meses AS MATERIALIZED (
     SELECT DATE((SELECT MAX(dt_pedido) FROM orders), 'start of month', '-11 months') AS mes
@@ -470,7 +470,7 @@ FROM meses m
 LEFT JOIN vendas_por_mes v ON strftime('%Y-%m', m.mes) = v.mes
 ORDER BY m.mes;
 
--- ranking de pedidos por cliente - antes fiz um RANK() direto em orders
+-- ranking de pedidos por cliente - Inicialmente foi feito um RANK() direto em orders
 
 WITH pedidos_cliente AS MATERIALIZED (
     SELECT 
@@ -555,3 +555,4 @@ FROM orders o
 JOIN customers c ON c.customer_id = o.customer_id
 ORDER BY o.order_id;
 -----------------------------------------------------------------------------------------------
+
